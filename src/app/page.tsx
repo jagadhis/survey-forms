@@ -52,7 +52,7 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {questions.map((q, index) => (
                   <div key={index} className="my-2">
-                    <h3 className="mb-2">{q.question}</h3>
+                    <h3 className="mb-2"> <strong>{index + 1}.</strong> {q.question}</h3>
                     <h4 className="text-gray-500">{q.scale}</h4>
                     <div className="flex items-center mt-2">
                       <h5 className="mr-4">1</h5>
