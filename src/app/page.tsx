@@ -44,33 +44,34 @@ export default function Home() {
 
   return (
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <Card className="w-full max-w-4xl p-6">
+        <Card className="w-full max-w-4xl p-2">
           <CardHeader className="text-center">
             <h5 className="font-bold">Course and Program Outcomes Evaluation</h5>
           </CardHeader>
           <CardContent>
-            {questions.map((q, index) => (
-                <div key={index} className="my-8">
-                  <h3 className="mb-2">{q.question}</h3>
-                  <h4 className="text-gray-500">{q.scale}</h4>
-                  <div className="flex items-center mt-4">
-                    <h5 className="mr-4">1</h5>
-                    <Input
-                        type="range"
-                        min="1"
-                        max="10"
-                        value={responses[index] || 5}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                            handleSliderChange(index, Number(e.target.value))
-                        }
-                        className="flex-grow appearance-none h-2 rounded-full bg-gray-400"
-                        style={{ accentColor: 'bg-gray-100' }}
-                    />
-                    <h5 className="ml-4">10</h5>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {questions.map((q, index) => (
+                  <div key={index} className="my-2">
+                    <h3 className="mb-2">{q.question}</h3>
+                    <h4 className="text-gray-500">{q.scale}</h4>
+                    <div className="flex items-center mt-2">
+                      <h5 className="mr-4">1</h5>
+                      <Input
+                          type="range"
+                          min="1"
+                          max="10"
+                          value={responses[index] || 5}
+                          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                              handleSliderChange(index, Number(e.target.value))
+                          }
+                          className="flex-grow"
+                      />
+                      <h5 className="ml-4">10</h5>
+                    </div>
+                    <h5 className="mt-1 text-center">Your rating: {responses[index] || 5}</h5>
                   </div>
-                  <h5 className="mt-1 text-center">Your rating: {responses[index] || 5}</h5>
-                </div>
-            ))}
+              ))}
+            </div>
           </CardContent>
           <CardFooter className="flex justify-center">
             <Button onClick={handleSubmit}>Submit</Button>
