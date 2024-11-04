@@ -1,101 +1,81 @@
-import Image from "next/image";
+'use client'
+
+import {ChangeEvent, useState} from 'react';
+import {Card, CardContent, CardFooter, CardHeader} from "@/components/ui/card";
+import {Input} from "@/components/ui/input";
+import {Button} from "@/components/ui/button";
+
+
+type Question = {
+  question: string;
+  scale: string;
+};
+
+const questions: Question[] = [
+  { question: "How clearly are the course outcomes defined and communicated to you?", scale: "(1 = very unclear, 10 = extremely clear)" },
+  { question: "How relevant do you find the course outcomes to your career or academic goals?", scale: "(1 = very low relevance, 10 = extremely relevant)" },
+  { question: "How practical and achievable do you think the course outcomes are within the course duration?", scale: "(1 = very difficult, 10 = easily achievable)" },
+  { question: "How well do the course outcomes align with current industry or academic standards?", scale: "(1 = not aligned, 10 = fully aligned)" },
+  { question: "How impactful do you think achieving the course outcomes will be for your skill development?", scale: "(1 = little impact, 10 = highly impactful)" },
+  { question: "How well do you feel the program outcomes prepare you for your career path or further education?", scale: "(1 = minimal preparation, 10 = excellent preparation)" },
+  { question: "How valuable do you find the program outcomes in building transferable skills?", scale: "(1 = low value, 10 = high value)" },
+  { question: "To what extent do you feel program outcomes are consistently reinforced across various courses in the program?", scale: "(1 = low consistency, 10 = high consistency)" },
+  { question: "How relevant do you think the program outcomes are to evolving industry demands or research trends?", scale: "(1 = outdated, 10 = highly relevant)" },
+  { question: "How likely are you to achieve the program outcomes upon completion of all required courses?", scale: "(1 = unlikely, 10 = highly likely)" },
+];
+
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [responses, setResponses] = useState<Record<number, number | undefined>>({});
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+  const handleSliderChange = (index: number, value: number) => {
+    setResponses((prevResponses) => ({
+      ...prevResponses,
+      [index]: value,
+    }));
+  };
+
+  const handleSubmit = () => {
+    alert("Thank you for completing the questionnaire!");
+    console.log(responses);
+    setResponses({});
+  };
+
+
+  return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <Card className="w-full max-w-4xl p-6">
+          <CardHeader className="text-center">
+            <h5 className="font-bold">Course and Program Outcomes Evaluation</h5>
+          </CardHeader>
+          <CardContent>
+            {questions.map((q, index) => (
+                <div key={index} className="my-8">
+                  <h3 className="mb-2">{q.question}</h3>
+                  <h4 className="text-gray-500">{q.scale}</h4>
+                  <div className="flex items-center mt-4">
+                    <h5 className="mr-4">1</h5>
+                    <Input
+                        type="range"
+                        min="1"
+                        max="10"
+                        value={responses[index] || 5}
+                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                            handleSliderChange(index, Number(e.target.value))
+                        }
+                        className="flex-grow appearance-none h-2 rounded-full bg-gray-400"
+                        style={{ accentColor: 'bg-gray-100' }}
+                    />
+                    <h5 className="ml-4">10</h5>
+                  </div>
+                  <h5 className="mt-1 text-center">Your rating: {responses[index] || 5}</h5>
+                </div>
+            ))}
+          </CardContent>
+          <CardFooter className="flex justify-center">
+            <Button onClick={handleSubmit}>Submit</Button>
+          </CardFooter>
+        </Card>
+      </div>
   );
 }
