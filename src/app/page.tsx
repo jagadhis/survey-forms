@@ -11,48 +11,59 @@ type Question = {
   question: string;
   scale: string;
   example?: string;
+  entryId: string;
 };
 
 const questions: Question[] = [
   { question: "How clearly are the course outcomes defined and communicated to you?",
     scale: "(1 = very unclear, 10 = extremely clear)",
-    example: "You are a first-year engineering student. At the start of your course, you receive a list of outcomes but feel unsure about what each outcome really means in practice. You wonder if each outcome will be addressed in assignments or exams."
+    example: "You are a first-year engineering student. At the start of your course, you receive a list of outcomes but feel unsure about what each outcome really means in practice. You wonder if each outcome will be addressed in assignments or exams.",
+    entryId: "entry.1199152723_sentinel"
   },
   { question: "How relevant do you find the course outcomes to your career or academic goals?",
     scale: "(1 = very low relevance, 10 = extremely relevant)",
-    example: "You want to pursue a career in data science and are enrolled in a mathematics course. You hope that the course outcomes will cover skills you need for data analysis, such as statistics and probability.  "
+    example: "You want to pursue a career in data science and are enrolled in a mathematics course. You hope that the course outcomes will cover skills you need for data analysis, such as statistics and probability.  ",
+    entryId: "entry.1029299216_sentinel"
   },
   { question: "How practical and achievable do you think the course outcomes are within the course duration?",
     scale: "(1 = very difficult, 10 = easily achievable)",
-    example: "You balance your studies with a part-time job and are concerned about whether you’ll be able to meet all the course outcomes given your time constraints. Some outcomes feel very ambitious for a single semester"
+    example: "You balance your studies with a part-time job and are concerned about whether you’ll be able to meet all the course outcomes given your time constraints. Some outcomes feel very ambitious for a single semester",
+    entryId: "entry.1914478662_sentinel"
   },
   { question: "How well do the course outcomes align with current industry or academic standards?",
     scale: "(1 = not aligned, 10 = fully aligned)",
-    example: "As a computer science student, you notice that many job listings ask for knowledge in current programming languages, but your course outcomes focus more on older programming techniques. "
+    example: "As a computer science student, you notice that many job listings ask for knowledge in current programming languages, but your course outcomes focus more on older programming techniques. ",
+    entryId: "entry.1270102374_sentinel"
   },
   { question: "How impactful do you think achieving the course outcomes will be for your skill development?",
     scale: "(1 = little impact, 10 = highly impactful)",
-    example: "You are aiming to gain practical skills that you can use in internships. You wonder if meeting the course outcomes will help you develop real-world skills you can apply right away. "
+    example: "You are aiming to gain practical skills that you can use in internships. You wonder if meeting the course outcomes will help you develop real-world skills you can apply right away. ",
+    entryId: "entry.1875065305_sentinel"
   },
   { question: "How well do you feel the program outcomes prepare you for your career path or further education?",
     scale: "(1 = minimal preparation, 10 = excellent preparation)",
-    example: "You are a final-year engineering student applying for jobs. You hope that your program outcomes have given you the core engineering skills needed for entry-level positions."
+    example: "You are a final-year engineering student applying for jobs. You hope that your program outcomes have given you the core engineering skills needed for entry-level positions.",
+    entryId: "entry.1262136353_sentinel"
   },
   { question: "How valuable do you find the program outcomes in building transferable skills?",
     scale: "(1 = low value, 10 = high value)",
-    example: "As a business student, you are interested in learning communication and teamwork skills that are useful across many industries, not just in business.  "
+    example: "As a business student, you are interested in learning communication and teamwork skills that are useful across many industries, not just in business.  ",
+    entryId: "entry.1407256470_sentinel"
   },
   { question: "To what extent do you feel program outcomes are consistently reinforced across various courses in the program?",
     scale: "(1 = low consistency, 10 = high consistency)",
-    example: "You notice that in some courses, the outcomes seem to overlap and build on one another, but in others, they feel disconnected from the overall program goals."
+    example: "You notice that in some courses, the outcomes seem to overlap and build on one another, but in others, they feel disconnected from the overall program goals.",
+    entryId: "entry.40986916_sentinel"
   },
   { question: "How relevant do you think the program outcomes are to evolving industry demands or research trends?",
     scale: "(1 = outdated, 10 = highly relevant)",
-    example: "You are studying environmental science and see growing opportunities in renewable energy. You wonder if your program outcomes will make you competitive in this field."
+    example: "You are studying environmental science and see growing opportunities in renewable energy. You wonder if your program outcomes will make you competitive in this field.",
+    entryId: "entry.1887396766_sentinel"
   },
   { question: "How likely are you to achieve the program outcomes upon completion of all required courses?",
     scale: "(1 = unlikely, 10 = highly likely)",
-    example: "You are finishing your studies in social work and feel that the program outcomes have been covered well throughout, giving you confidence that you’re ready to apply them in your career."
+    example: "You are finishing your studies in social work and feel that the program outcomes have been covered well throughout, giving you confidence that you’re ready to apply them in your career.",
+    entryId: "entry.1502066654_sentinel"
   },
 ];
 
@@ -67,10 +78,25 @@ export default function Home() {
     }));
   };
 
-  const handleSubmit = () => {
-    alert("Thank you for completing the questionnaire!");
-    console.log(responses);
-    setResponses({});
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    questions.forEach((q, index) => {
+      if (q.entryId) {
+        formData.append(`entry.${q.entryId}`, String(responses[index] || ""));
+      }
+    });
+
+    try {
+      await fetch("https://docs.google.com/forms/u/0/d/e/1FAIpQLSceOBSPwKKwGsu0I_Q-ruzK0Z18_hG56Abe4YafGx9PbqrmSA/formResponse", {
+        method: "POST",
+        body: formData,
+      });
+      alert("Thank you for completing the questionnaire!");
+      setResponses({});
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("There was an error submitting your feedback.");
+    }
   };
 
 
